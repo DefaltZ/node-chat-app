@@ -21,6 +21,11 @@ io.on('connection', socket => {
     socket.on('disconnect', () => {
         io.emit('message', 'A user has left the chat')
     })
+
+    //listen for chat message
+    socket.on('chatmessage', (msg) => {
+        io.emit('message', msg);
+    });
 });
 const PORT = 9000 || process.env.PORT
 server.listen(PORT, () => console.log(`chat server running on port ${PORT}`))
