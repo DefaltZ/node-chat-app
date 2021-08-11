@@ -32,7 +32,7 @@ io.on('connection', socket => {
 
     //disconnect user
     socket.on('disconnect', () => {
-        io.emit('message', formatMessage(botName, 'A user has left the chat'))
+        io.emit('message', formatMessage(botName, ` has left the chat`))
     })
 });
 const PORT = 9000 || process.env.PORT
