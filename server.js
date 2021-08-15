@@ -4,7 +4,7 @@ const http = require('http')
 const socketio = require('socket.io')
 const formatMessage = require('./utils/message')
 const botName = 'node chatbot'
-const {userJoin, getCurrentUser} = require('./utils/users')
+const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require('./utils/users')
 
 const app = express()
 const server = http.createServer(app);
@@ -27,13 +27,18 @@ io.on('connection', socket => {
 
     //listen for chat message
     socket.on('chatmessage', (msg) => {
-        io.emit('message', formatMessage('USER', msg));
+        const user = getCurrentUser(socket.id);
+        io.to(user.room).emit('message', formatMessage(user.username, msg));
     });
 
     //disconnect user
     socket.on('disconnect', () => {
-        io.emit('message', formatMessage(botName, ` has left the chat`))
+        const user = userLeave(socket.id);
+
+        if (user) {
+            io.to(user.room).emit('message', formatMessage(botName, `${user.username} has left the chat`))
+        }
     })
 });
 const PORT = 9000 || process.env.PORT
-server.listen(PORT, () => console.log(`chat server running on port ${PORT}`))
+server.listen(PORT, () => console.log(`chat server running on port  ${PORT}`))
