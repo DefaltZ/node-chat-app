@@ -43,11 +43,12 @@ io.on('connection', socket => {
 
         if (user) {
             io.to(user.room).emit('message', formatMessage(botName, `${user.username} has left the chat`))
-        };
-        io.to(user.room).emit('roomUsers', {
-            room: user.room,
-            users: getRoomUsers(user.room)
-        });
+
+            io.to(user.room).emit('roomUsers', {
+                room: user.room,
+                users: getRoomUsers(user.room)
+            });
+        }
     })
 });
 const PORT = 9000 || process.env.PORT

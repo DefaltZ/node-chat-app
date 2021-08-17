@@ -25,7 +25,7 @@ socket.on('message', message => {
 //get room and users
 socket.on('roomUsers', ({room, users}) => {
     outputRoomName(room);
-    outputRoomName(users);
+    outputUsers(users);
 });
 
 //message submit
@@ -60,3 +60,8 @@ function outputRoomName(room){
 }
 
 //add users to DOM
+function outputUsers(users){
+    userList.innerHTML = ` 
+    ${users.map(user => `<li>${user.username}</li>`).join('')}
+    `;
+}
