@@ -2,13 +2,6 @@ const chatform = document.getElementById('chat-form');
 const chatmessages = document.querySelector('.chat-messages');
 const roomName = document.getElementById('room-name');
 const userList = document.getElementById('users');
-import { w3cwebsocket as W3CWebSocket } from "websocket";
-//get username and room from url
-
-const client = new W3CWebSocket('ws://127.0.0.1:9000');
-if (client){
-    console.log('websocket client connected')
-}
 
 const { username, room } = Qs.parse(location.search, {
     ignoreQueryPrefix: true
