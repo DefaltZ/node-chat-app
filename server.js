@@ -22,6 +22,12 @@ io.on('connection', socket => {
         socket.emit('message', formatMessage(botName, 'welcome to node chat app'))
         //broadcast to others when user connects
         socket.broadcast.to(user.room).emit('message', formatMessage(botName, `${user.username} has joined the chat`));
+
+        //send users and chat info
+        io.to(user.room).emit('roomUsers', {
+            room: user.room,
+            users: getRoomUsers(user.room)
+        });
     })
     console.log('new socket connection...')
 
@@ -37,7 +43,11 @@ io.on('connection', socket => {
 
         if (user) {
             io.to(user.room).emit('message', formatMessage(botName, `${user.username} has left the chat`))
-        }
+        };
+        io.to(user.room).emit('roomUsers', {
+            room: user.room,
+            users: getRoomUsers(user.room)
+        });
     })
 });
 const PORT = 9000 || process.env.PORT
